@@ -14,5 +14,17 @@
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themsheeps/SAFBC_Property_eth.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/themsheeps/SAFBC_Property_eth/issues"
+  },
+  "homepage": "https://github.com/themsheeps/SAFBC_Property_eth#readme",
+  "dependencies": {
+    "openzeppelin-solidity": "1.12.0"
   }
 }

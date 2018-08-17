@@ -24,7 +24,7 @@ contract Proprty_Contract{
         address seller;
         uint deedid;
         uint256 price;
-   //     Bid[] bids; 
+        Bid[] bids; 
         ListingStatus status; 
     }
 
@@ -59,13 +59,13 @@ contract Proprty_Contract{
 
     function addListing(uint _deedid, uint256 _price) public returns(address, uint, uint256){
         //check to see if owner owns property
-        ActiveListing.push(Listing({
-            seller: msg.sender,
-            deedid: _deedid,
-            price: _price,
-    //        [Bid{}],
-            status: ListingStatus.Listed
-        }));
+        Listing memory _listing;
+        _listing.seller = msg.sender;
+        _listing.deedid = _deedid;
+        _listing.price = _price;
+        _listing.status = ListingStatus.Listed;
+        
+        ActiveListing.push(_listing);
         numberOfListing++;
         emit ListingEvent(_deedid, _price, ListingStatus.Listed);
     }

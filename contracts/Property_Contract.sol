@@ -29,9 +29,10 @@ contract Proprty_Contract{
     }
 
     struct Bid{
-      //  address bider; 
+        address bidder; 
         uint256 bidValue;
         uint256 depositValue;
+        BidStatus bidStatus;
     }
 
     
@@ -40,6 +41,17 @@ contract Proprty_Contract{
     Listing[] ActiveListing;
     address public owner; 
     uint public numberOfListing;
+    uint256 private contractAmount;
+
+    modifier isSeller(uint _listingid){
+        require(ActiveListing[_listingid].seller == msg.sender, "Not the seller accepting the bid");
+        _;
+    }
+    
+    modifier isBidder(uint _listingid, uint _bidid){
+        require(ActiveListing[_listingid].bids[_bidid].bidder == msg.sender, "Not the bidder of the bid");
+        _;
+    }
 
     constructor() public{
         owner = msg.sender;
@@ -56,15 +68,6 @@ contract Proprty_Contract{
         return(ActiveListing[listingid].seller, ActiveListing[listingid].deedid, ActiveListing[listingid].price, 
         ActiveListing[listingid].status);
     }
-
-    function addBid(uint256 _deedid, uint256 _bidValue, uint256 _depositValue) public{
-        // Wanting to add BIDS for a Listing here.
-        Bid _bid;
-        _bid.bidValue = _bidValue;
-        _bid.depositValue = _depositValue; 
-        ActiveListing[_deedid].bids.push(_bid);
-    }
-    
 
     function addListing(uint _deedid, uint256 _price) public returns(address, uint, uint256){
         //check to see if owner owns property
@@ -85,5 +88,48 @@ contract Proprty_Contract{
 
     function getDeed(uint _deedid) public returns(address _owner, uint256 _value){
         return(deeds[_deedid].owner, deeds[_deedid].value);
+    }
+
+    function addBid(uint256 _listingid, uint256 _bidValue, uint256 _depositValue) public{
+        // Wanting to add BIDS for a Listing here.
+        Bid _bid;
+        _bid.bidValue = _bidValue;
+        _bid.bidder = msg.sender;
+        _bid.depositValue = _depositValue; 
+        _bid.bidStatus = BidStatus.Pending;
+        ActiveListing[_listingid].bids.push(_bid);
+        ActiveListing[_listingid].status = ListingStatus.Bid;
+    }
+
+    function acceptBidSeller(uint _listingid, uint _bidid) public isSeller(_listingid){            
+        ActiveListing[_listingid].bids[_bidid].bidStatus = BidStatus.Accepted;
+        ActiveListing[_listingid].status = ListingStatus.Accepted;
+    }
+
+    function payDeposit(uint _listingid, uint _bidid) public payable isBidder(_listingid, _bidid){
+        contractAmount += msg.value;
+        if(msg.value == ActiveListing[_listingid].bids[_bidid].depositValue){
+            ActiveListing[_listingid].status = ListingStatus.DepositPaid;
+        }
+    }
+    
+    function validateListing(uint _listingid) public{        
+        ActiveListing[_listingid].status = ListingStatus.Validated;
+    } 
+
+    function payFullAmount(uint _listingid, uint _bidid) public payable isBidder(_listingid, _bidid){ 
+        contractAmount += msg.value;
+        if(ActiveListing[_listingid].status == ListingStatus.Validated){
+            if(msg.value == (ActiveListing[_listingid].bids[_bidid].bidValue - ActiveListing[_listingid].bids[_bidid].depositValue)){               
+                ActiveListing[_listingid].status = ListingStatus.Paid;
+             //   We can either do the transfer here? Or let there be like a deeds office that does the offical transfer? I'll program both for now and comment out here
+             //   address sellerAddress = ActiveListing[_listingid].seller;
+             //   sellerAddress.transfer(ActiveListing[_listingid].bids[_bidid].bidValue);
+            }
+        }
+    }
+    function completeTransfer(uint _listingid, uint _bidid) public{
+        address sellerAddress = ActiveListing[_listingid].seller;
+        sellerAddress.transfer(ActiveListing[_listingid].bids[_bidid].bidValue);
     }
 }

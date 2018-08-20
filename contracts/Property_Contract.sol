@@ -1,10 +1,10 @@
 pragma solidity ^0.4.24;
 
-import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
-import "node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol";
-import "node_modules/openzeppelin-solidity/contracts/token/ERC20/BasicToken.sol";
-import "contracts/Ownable.sol";
+import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/BasicToken.sol";
+import "./Ownable.sol";
 
 contract Proprty_Contract{
     
@@ -57,10 +57,12 @@ contract Proprty_Contract{
         ActiveListing[listingid].status);
     }
 
-    function addBid(uint _deedid, uint256 _bidValue, uint256 _depositValue) public{
-        // Wanting to add BIDS for a Listing here. 
-        Listing[_deedid].bids[msg.sender].bidValue = _bidValue;
-        Listing[_deedid].bids[msg.sender].depositValue = _depositValue;
+    function addBid(uint256 _deedid, uint256 _bidValue, uint256 _depositValue) public{
+        // Wanting to add BIDS for a Listing here.
+        Bid _bid;
+        _bid.bidValue = _bidValue;
+        _bid.depositValue = _depositValue; 
+        ActiveListing[_deedid].bids.push(_bid);
     }
     
 

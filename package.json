@@ -1,5 +1,5 @@
 {
-  "name": "pet-shop",
+  "name": "SAFBC_Property_eth",
   "version": "1.0.0",
   "description": "",
   "main": "truffle.js",
@@ -7,34 +7,20 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "lite-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "lite-server": "^2.3.0"
-  },
-<<<<<<< HEAD
-=======
-  "dependencies": {
-    "openzeppelin-solidity": "1.12.0"
-  },
->>>>>>> 2c8cfd1fc8f71d5a42f9eff65ff1973cf4b3e687
   "repository": {
     "type": "git",
     "url": "git+https://github.com/themsheeps/SAFBC_Property_eth.git"
   },
   "keywords": [],
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/themsheeps/SAFBC_Property_eth/issues"
   },
-<<<<<<< HEAD
   "homepage": "https://github.com/themsheeps/SAFBC_Property_eth#readme",
   "dependencies": {
     "openzeppelin-solidity": "1.12.0"
   }
-=======
-  "homepage": "https://github.com/themsheeps/SAFBC_Property_eth#readme"
->>>>>>> 2c8cfd1fc8f71d5a42f9eff65ff1973cf4b3e687
 }

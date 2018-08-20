@@ -29,11 +29,12 @@ contract Proprty_Contract{
     }
 
     struct Bid{
-        address bider; 
+      //  address bider; 
         uint256 bidValue;
         uint256 depositValue;
     }
 
+    
 
   //  uint[] acceptedListing;
     Listing[] ActiveListing;
@@ -54,6 +55,12 @@ contract Proprty_Contract{
     function getListings(uint listingid) public returns(address _seller, uint _deedid, uint256 _price, ListingStatus _status){
         return(ActiveListing[listingid].seller, ActiveListing[listingid].deedid, ActiveListing[listingid].price, 
         ActiveListing[listingid].status);
+    }
+
+    function addBid(uint _deedid, uint256 _bidValue, uint256 _depositValue) public{
+        // Wanting to add BIDS for a Listing here. 
+        Listing[_deedid].bids[msg.sender].bidValue = _bidValue;
+        Listing[_deedid].bids[msg.sender].depositValue = _depositValue;
     }
     
 
